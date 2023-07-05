@@ -1,8 +1,15 @@
-import updateUniqueItems from "./10-update_uniq_items.js";
-import groceriesList from "./9-groceries_list.js";
+export const weakMap = new WeakMap();
 
-const map = groceriesList();
-console.log(map);
+export function queryAPI(endpoint) {
+  let called = weakMap.get(endpoint) || 0;
 
-updateUniqueItems(map)
-console.log(map);
+  called += 1;
+
+  weakMap.set(endpoint, called);
+
+  if (called >= 5) {
+    throw Error('Endpoint load is high');
+  }
+
+  return called;
+}
